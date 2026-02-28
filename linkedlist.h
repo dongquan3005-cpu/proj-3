@@ -200,7 +200,10 @@ class LinkedList {
    * Must run in O(N) time.
    */
   LinkedList& operator=(const LinkedList& other) {
-    return *this;
+    if (this == &other) {
+      return *this;
+    }
+    clear();
   }
 
   /**
