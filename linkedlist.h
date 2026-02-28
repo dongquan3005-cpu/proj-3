@@ -68,7 +68,7 @@ class LinkedList {
    * Adds the given `T` to the back of the `LinkedList`.
    */
   void push_back(T data) {
-    Node* node = new Node(false);
+    Node* node = new Node(data);
 
     if (list_front == nullptr) {
       list_front = node;
@@ -175,18 +175,10 @@ class LinkedList {
    * Must run in O(N) time.
    */
   LinkedList(const LinkedList& other) {
-    list_front = nullptr;
     list_size = 0;
+    list_front = nullptr;
 
-    if (other.list_front == nullptr) {
-      return;
-    }
-    list_front = new Node(other.list_front->data);
-    list_size = 1;
-
-    Node* tail = list_front;
-    Node* curr = other.list_front->next;
-
+    Node* curr = other.list_front;
     while (curr != nullptr) {
       push_back(curr->data);
       curr = curr->next;
@@ -204,6 +196,13 @@ class LinkedList {
       return *this;
     }
     clear();
+
+    Node* curr = other.list_front;
+    while (curr != nullptr) {
+      push_back(curr->data);
+      curr = curr->next;
+    }
+    return *this;
   }
 
   /**
@@ -212,7 +211,19 @@ class LinkedList {
    * time.
    */
   string to_string() const {
-    return "";
+    stringstream ss;
+    ss << "[";
+
+    Node* curr = list_front;
+    while (curr != nullptr) {
+      ss << curr->data;
+      if (curr->next != nullptr) {
+        ss << ", ";
+      }
+      curr = curr->next;
+    }
+    ss << "]";
+    return ss.str();
   }
 
   /**
@@ -220,7 +231,17 @@ class LinkedList {
    * index. If no match is found, returns "-1".
    */
   size_t find(const T& data) {
-    return 0;
+    Node* curr = list_front;
+    size_t index = 0;
+
+    while (curr != nullptr) {
+      if (curr->data == data) {
+        return index;
+      }
+      curr = curr->next;
+      index++;
+    }
+    return (size_t)-1;
   }
 
   /**
@@ -233,6 +254,30 @@ class LinkedList {
    * `invalid_argument` exception.
    */
   void remove_last(const T& value) {
+    Node* curr = list_front;
+    Node* prev = nullptr;
+    Node* match = nullptr;
+    Node* matchPrev = nullptr;
+
+    while (curr) {
+      if (curr->data == value) {
+        match = curr;
+        matchPrev = prev;
+      }
+      prev = curr;
+      curr = curr->next;
+    }
+    if (match == nullptr) {
+      throw invalid_argument("value not found");
+    }
+
+    if (matchPrev == nullptr) {
+      pop_front();
+    } else {
+      matchPrev->next = match->next;
+      delete match;
+      list_size--;
+    }
   }
 
   /**
