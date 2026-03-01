@@ -286,6 +286,23 @@ class LinkedList {
    * a current valid index in the list, throws `out_of_range`.
    */
   void insert_before(size_t index, T elem) {
+    if (index >= list_size) {
+      throw out_of_range("index is out of range");
+    }
+
+    if (index == 0) {
+      push_front(elem);
+      return;
+    }
+
+    Node* prev = list_front;
+    for (size_t i = 1; i < index; i++) {
+      prev = prev->next;
+    }
+
+    Node* newNode = new Node(elem, prev->next);
+    prev->next = newNode;
+    list_size++;
   }
 
   /**
@@ -296,6 +313,19 @@ class LinkedList {
    * would change the list to `[0, 2, 4]`.
    */
   void remove_every_other() {
+    if (list_front == nullptr) {
+      return;
+    }
+    Node* prev = list_front;
+
+    while (prev != nullptr && prev->next != nullptr) {
+      Node* toRemove = prev->next;
+      prev->next = toRemove->next;
+      delete toRemove;
+      list_size--;
+
+      prev = prev->next;
+    }
   }
 
   /**

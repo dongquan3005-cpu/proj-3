@@ -179,3 +179,64 @@ TEST(LinkedListAugmented, RemoveLastThrows) {
 
   EXPECT_THROW(ll.remove_last(5), invalid_argument);
 }
+
+TEST(LinkedListExtras, InsertBeforeMiddle) {
+  LinkedList<int> ll;
+  ll.push_back(1);
+  ll.push_back(3);
+
+  ll.insert_before(1, 2);
+
+  EXPECT_EQ(ll.to_string(), "[1, 2, 3]");
+}
+
+TEST(LinkedListExtras, InsertBeforeZero) {
+  LinkedList<int> ll;
+  ll.push_back(2);
+
+  ll.insert_before(0, 1);
+
+  EXPECT_EQ(ll.to_string(), "[1, 2]");
+}
+
+TEST(LinkedListExtras, InsertBeforeLastIndex) {
+  LinkedList<int> ll;
+  ll.push_back(1);
+  ll.push_back(2);
+  ll.push_back(4);
+
+  ll.insert_before(2, 3);
+
+  EXPECT_EQ(ll.to_string(), "[1, 2, 3, 4]");
+}
+
+TEST(LinkedListExtras, InsertBeforeOutOfRangeThrows) {
+  LinkedList<int> ll;
+  ll.push_back(1);
+
+  EXPECT_THROW(ll.insert_before(2, 5), out_of_range);
+}
+
+TEST(LinkedListExtras, RemoveEveryOtherBasic) {
+  LinkedList<int> ll;
+  ll.push_back(0);
+  ll.push_back(1);
+  ll.push_back(2);
+  ll.push_back(3);
+  ll.push_back(4);
+
+  ll.remove_every_other();
+
+  EXPECT_EQ(ll.to_string(), "[0, 2, 4]");
+}
+
+TEST(LinkedListExtras, RemoveEveryOtherOddSize) {
+  LinkedList<int> ll;
+  ll.push_back(1);
+  ll.push_back(2);
+  ll.push_back(3);
+
+  ll.remove_every_other();
+
+  EXPECT_EQ(ll.to_string(), "[1, 3]");
+}
