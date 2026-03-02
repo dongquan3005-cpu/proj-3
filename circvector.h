@@ -61,6 +61,26 @@ class CircVector {
    * Adds the given `T` to the front of the `CircVector`.
    */
   void push_front(T elem) {
+    if (vec_size == capacity) {
+      size_t new_capacity = capacity * 2;
+      T* new_data = new T[new_capacity];
+
+      for (size_t i = 0; i < vec_size; i++) {
+        new_data[i] = data[(front_idx + i) % capacity];
+      }
+      delete[] data;
+      data = new_data;
+      capacity = new_capacity;
+      front_idx = 0;
+    }
+
+    if (front_idx == 0) {
+      front_idx = capacity - 1;
+    } else {
+      front_idx--;
+    }
+    data[front_idx] = elem;
+    vec_size++;
   }
 
   /**
@@ -91,7 +111,17 @@ class CircVector {
    * If the `CircVector` is empty, throws a `runtime_error`.
    */
   T pop_front() {
-    return T{};
+    if (empty()) {
+      throw runtime_error("pop_front is empty");
+    }
+    T value = data[front_idx];
+    if (front_idx == capacity - 1) {
+      front_idx = 0;
+    } else {
+      front_idx = front_idx + 1;
+    }
+    vec_size--;
+    return value;
   }
 
   /**
@@ -100,13 +130,24 @@ class CircVector {
    * If the `CircVector` is empty, throws a `runtime_error`.
    */
   T pop_back() {
-    return T{};
+    if (empty()) {
+      throw runtime_error("pop_back is empty");
+    }
+    size_t last = front_idx + vec_size - 1;
+    if (last >= capacity) {
+      last = last - capacity;
+    }
+    T value = data[last];
+    vec_size--;
+    return value;
   }
 
   /**
    * Removes all elements from the `CircVector`.
    */
   void clear() {
+    vec_size = 0;
+    front_idx = 0;
   }
 
   /**
@@ -136,6 +177,15 @@ class CircVector {
    * Must run in O(N) time.
    */
   CircVector(const CircVector& other) {
+    capacity = other.capacity;
+    vec_size = other.vec_size;
+    front_idx = 0;
+
+    data = new T[capacity];
+
+    for (size_t i = 0; i < vec_size; i++) {
+      data[i] = other.data[(other.front_idx + i) % other.capacity];
+    }
   }
 
   /**
@@ -145,6 +195,20 @@ class CircVector {
    * Must run in O(N) time.
    */
   CircVector& operator=(const CircVector& other) {
+    if (this == &other) {
+      return *this;
+    }
+    delete[] data;
+
+    front_idx = 0;
+    capacity = other.capacity;
+    vec_size = other.vec_size;
+    data = new T[capacity];
+
+    for (size_t i = 0; i < vec_size; i++) {
+      data[i] = other.data[(other.front_idx + i) % other.capacity];
+    }
+
     return *this;
   }
 
@@ -154,7 +218,18 @@ class CircVector {
    * time.
    */
   string to_string() const {
-    return "";
+    stringstream ss;
+    ss << "[";
+
+    for (size_t i = 0; i < vec_size; i++) {
+      ss << data[(front_idx + i) % capacity];
+      if (i + 1 < vec_size) {
+        ss << ", ";
+      }
+    }
+
+    ss << "]";
+    return ss.str();
   }
 
   /**
@@ -162,7 +237,13 @@ class CircVector {
    * index in the `CircVector`. If no match is found, returns "-1".
    */
   size_t find(const T& target) {
-    return 0;
+    for (size_t i = 0; i < vec_size; i++) {
+      if (data[(front_idx + i) % capacity] == target) {
+        return i;
+      }
+    }
+
+    return (size_t)-1;
   }
 
   /**
@@ -175,6 +256,22 @@ class CircVector {
    * `invalid_argument` exception.
    */
   void remove_last(const T& value) {
+    ssize_t lastIndex = -1;
+
+    for (size_t i = 0; i < vec_size; i++){
+      if (data[(front_idx + i) % capacity] == value){
+        lastIndex = i;
+      }
+    }
+
+    if (lastIndex == -1){
+      throw invalid_argument("value cant be found")
+    }
+
+    for (size_t i = lastIndex; i < vec_size - 1; i++){
+      data[(front_idx + i) % capacity] = data[(front_idx + i + 1) % capacity];
+    }
+    vec_size--;
   }
 
   /**
@@ -183,6 +280,16 @@ class CircVector {
    * a current valid index in the list, throws `out_of_range`.
    */
   void insert_before(size_t index, T elem) {
+    if (index >= vec_size) {
+        throw out_of_range("index out of range");
+    }
+
+    if (vec_size == capacity){
+      T* new_data = new T[capacity * 2];
+    }
+
+    
+
   }
 
   /**
