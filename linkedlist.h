@@ -159,7 +159,7 @@ class LinkedList {
    */
   T& at(size_t index) const {
     if (index >= list_size) {
-      throw out_of_range("invaled index");
+      throw out_of_range("invalid index");
     }
 
     Node* curr = list_front;
@@ -175,13 +175,20 @@ class LinkedList {
    * Must run in O(N) time.
    */
   LinkedList(const LinkedList& other) {
-    list_size = 0;
+    list_size = other.list_size;
     list_front = nullptr;
-    list_back = nullptr;
-    Node* curr = other.list_front;
-    while (curr) {
-      push_back(curr->data);
-      curr = curr->next;
+
+    if (other.list_front == nullptr) {
+      return;
+    }
+    list_front = new Node(other.list_front->data);
+    Node* curr_1 = list_front;
+    Node* curr_2 = other.list_front->next;
+    
+    while (curr_2 != nullptr) {
+      curr_1->next = new Node(curr_2->data);
+      curr_1 = curr_1->next;
+      curr_2 = curr_2->next;
     }
   }
 
@@ -196,12 +203,20 @@ class LinkedList {
       return *this;
     }
     clear();
-
-    Node* curr = other.list_front;
-    while (curr) {
-      push_back(curr->data);
-      curr = curr->next;
+    Node* curr_2 = other.list_front;
+    Node* curr_1 = nullptr;
+    while (curr_2 != nullptr) {
+      Node* newNode = new Node(curr_2->data);
+      if (curr_1 == nullptr) {
+        list_front = newNode;
+      } else {
+        curr_1->next = newNode;
+      }
+      curr_1 = newNode;
+      list_size++;
+      curr_2 = curr_2->next;
     }
+
     return *this;
   }
 
