@@ -243,3 +243,26 @@ TEST(CircVectorAugmented, FindChecksLastElement) {
     cv.push_back(30);
     EXPECT_EQ(cv.find(30), 2);
 }
+
+TEST(CircVectorExtras, InsertBeforeOutOfRangeThrows) {
+    CircVector<int> cv;
+    cv.push_back(1);
+    cv.push_back(2);
+    EXPECT_THROW(cv.insert_before(5, 10), out_of_range);
+}
+
+TEST(CircVectorExtras, InsertBeforeEmptyThrows) {
+    CircVector<int> cv;
+    EXPECT_THROW(cv.insert_before(0, 10), out_of_range);
+}
+
+TEST(CircVectorExtras, InsertBeforeResizesWhenFull) {
+    CircVector<int> cv(2);
+    cv.push_back(1);
+    cv.push_back(2);
+    cv.insert_before(1, 5);
+    EXPECT_EQ(cv.size(), 3);
+    EXPECT_EQ(cv.at(0), 1);
+    EXPECT_EQ(cv.at(1), 5);
+    EXPECT_EQ(cv.at(2), 2);
+}
