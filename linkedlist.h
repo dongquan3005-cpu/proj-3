@@ -179,7 +179,7 @@ class LinkedList {
     list_front = nullptr;
 
     Node* curr = other.list_front;
-    while (curr != nullptr) {
+    while (curr) {
       push_back(curr->data);
       curr = curr->next;
     }
@@ -198,7 +198,7 @@ class LinkedList {
     clear();
 
     Node* curr = other.list_front;
-    while (curr != nullptr) {
+    while (curr) {
       push_back(curr->data);
       curr = curr->next;
     }
