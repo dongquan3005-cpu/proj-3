@@ -16,7 +16,6 @@ TEST(CircVectorCore, AtBasic) {
   CircVector<int> cv;
   cv.push_back(10);
   cv.push_back(20);
-
   EXPECT_EQ(cv.at(0), 10);
   EXPECT_EQ(cv.at(1), 20);
 }
@@ -41,7 +40,6 @@ TEST(CircVectorCore, PushBackBasic) {
   cv.push_back(1);
   cv.push_back(2);
   cv.push_back(3);
-
   EXPECT_EQ(cv.at(0), 1);
   EXPECT_EQ(cv.at(1), 2);
   EXPECT_EQ(cv.at(2), 3);
@@ -52,7 +50,6 @@ TEST(CircVectorCore, PushBackResize) {
   cv.push_back(1);
   cv.push_back(2);
   cv.push_back(3);
-
   EXPECT_EQ(cv.size(), 3);
   EXPECT_EQ(cv.at(0), 1);
   EXPECT_EQ(cv.at(1), 2);
@@ -226,4 +223,22 @@ TEST(CircVectorCore, PushFrontResizesWhenFull) {
   EXPECT_EQ(cv.at(0), 3);
   EXPECT_EQ(cv.at(1), 2);
   EXPECT_EQ(cv.at(2), 1);
+}
+
+TEST(CircVectorAugmented, AssignmentSelf) {
+    CircVector<int> cv;
+    cv.push_back(1);
+    cv.push_back(2);
+    cv = cv;
+    EXPECT_EQ(cv.size(), 2);
+    EXPECT_EQ(cv.at(0), 1);
+    EXPECT_EQ(cv.at(1), 2);
+}
+
+TEST(CircVectorAugmented, FindChecksLastElement) {
+    CircVector<int> cv;
+    cv.push_back(10);
+    cv.push_back(20);
+    cv.push_back(30);
+    EXPECT_EQ(cv.find(30), 2);
 }
