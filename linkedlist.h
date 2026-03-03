@@ -177,7 +177,7 @@ class LinkedList {
   LinkedList(const LinkedList& other) {
     list_size = 0;
     list_front = nullptr;
-
+    list_back = nullptr;
     Node* curr = other.list_front;
     while (curr) {
       push_back(curr->data);
