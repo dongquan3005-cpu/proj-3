@@ -162,7 +162,7 @@ class CircVector {
    *
    * If the index is invalid, throws `out_of_range`.
    */
-  T& at(size_t index) {
+  T& at(size_t index) const {
     if (index >= vec_size) {
       throw out_of_range("out of range index");
     }
