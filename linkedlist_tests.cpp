@@ -231,3 +231,10 @@ TEST(LinkedListAugmented, AssignmentFromEmpty) {
     EXPECT_EQ(ll.size(), 0);
     EXPECT_TRUE(ll.empty());
 }
+
+TEST(LinkedListExtras, RemoveEveryOtherEmpty) {
+    LinkedList<int> ll;
+    ll.remove_every_other();
+    EXPECT_EQ(ll.size(), 0);
+    EXPECT_TRUE(ll.empty());
+}
