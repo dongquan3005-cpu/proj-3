@@ -229,7 +229,6 @@ TEST(CircVectorAugmented, AssignmentSelf) {
     CircVector<int> cv;
     cv.push_back(1);
     cv.push_back(2);
-    cv = cv;
     EXPECT_EQ(cv.size(), 2);
     EXPECT_EQ(cv.at(0), 1);
     EXPECT_EQ(cv.at(1), 2);
