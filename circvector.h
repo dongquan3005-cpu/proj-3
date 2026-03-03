@@ -258,17 +258,17 @@ class CircVector {
   void remove_last(const T& value) {
     ssize_t lastIndex = -1;
 
-    for (size_t i = 0; i < vec_size; i++){
-      if (data[(front_idx + i) % capacity] == value){
+    for (size_t i = 0; i < vec_size; i++) {
+      if (data[(front_idx + i) % capacity] == value) {
         lastIndex = i;
       }
     }
 
-    if (lastIndex == -1){
-      throw invalid_argument("value cant be found")
+    if (lastIndex == -1) {
+      throw invalid_argument("value cant be found");
     }
 
-    for (size_t i = lastIndex; i < vec_size - 1; i++){
+    for (size_t i = lastIndex; i < vec_size - 1; i++) {
       data[(front_idx + i) % capacity] = data[(front_idx + i + 1) % capacity];
     }
     vec_size--;
@@ -281,15 +281,28 @@ class CircVector {
    */
   void insert_before(size_t index, T elem) {
     if (index >= vec_size) {
-        throw out_of_range("index out of range");
+      throw out_of_range("index out of range");
     }
 
-    if (vec_size == capacity){
-      T* new_data = new T[capacity * 2];
+    if (vec_size == capacity) {
+      size_t new_capacity = capacity * 2;
+      T* new_data = new T[new_capacity];
+
+      for (size_t i = 0; i < vec_size; i++) {
+        new_data[i] = data[(front_idx + i) % capacity];
+      }
+      delete[] data;
+      front_idx = 0;
+      data = new_data;
+      capacity = new_capacity;
     }
-
-    
-
+    size_t i = vec_size;
+    while (i > index) {
+      data[(front_idx + i) % capacity] = data[(front_idx + i - 1) % capacity];
+      i--;
+    }
+    data[(front_idx + index) % capacity] = elem;
+    vec_size++;
   }
 
   /**
@@ -300,6 +313,14 @@ class CircVector {
    * would change the list to `[0, 2, 4]`.
    */
   void remove_every_other() {
+    if (vec_size <= 1) {
+      return;
+    }
+    size_t writeIndex = (vec_size + 1) / 2;
+    for (size_t i = 1; i < writeIndex; i++) {
+      data[(front_idx + i) % capacity] = data[(front_idx + i * 2) % capacity];
+    }
+    vec_size = writeIndex;
   }
 
   /**

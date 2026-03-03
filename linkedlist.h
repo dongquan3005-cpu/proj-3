@@ -157,7 +157,7 @@ class LinkedList {
    *
    * If the index is invalid, throws `out_of_range`.
    */
-  T& at(size_t index) {
+  T& at(size_t index) const {
     if (index >= list_size) {
       throw out_of_range("invaled index");
     }
