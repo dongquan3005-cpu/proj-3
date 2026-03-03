@@ -221,3 +221,13 @@ TEST(LinkedListAugmented, FindChecksLastElement) {
     ll.push_back(3);
     EXPECT_EQ(ll.find(3), 2);
 }
+
+TEST(LinkedListAugmented, AssignmentFromEmpty) {
+    LinkedList<int> ll;
+    ll.push_back(10);
+    ll.push_back(20);
+    LinkedList<int> empty;
+    ll = empty;
+    EXPECT_EQ(ll.size(), 0);
+    EXPECT_TRUE(ll.empty());
+}
