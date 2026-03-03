@@ -240,3 +240,11 @@ TEST(LinkedListExtras, RemoveEveryOtherOddSize) {
 
   EXPECT_EQ(ll.to_string(), "[1, 3]");
 }
+
+TEST(LinkedListCore, PopBackUpdatesSizeProperly) {
+  LinkedList<int> ll;
+  ll.push_back(1);
+  ll.push_back(2);
+  ll.pop_back();
+  EXPECT_EQ(ll.size(), 1);
+}
