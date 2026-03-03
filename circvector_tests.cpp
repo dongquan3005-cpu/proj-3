@@ -187,3 +187,43 @@ TEST(CircVectorExtras, RemoveEveryOtherBasic) {
   cv.remove_every_other();
   EXPECT_EQ(cv.to_string(), "[0, 2, 4]");
 }
+
+TEST(CircVectorCore, ClearResetsSize) {
+  CircVector<int> cv;
+  cv.push_back(1);
+  cv.push_back(2);
+  cv.clear();
+  EXPECT_EQ(cv.size(), 0);
+  EXPECT_TRUE(cv.empty());
+}
+
+TEST(CircVectorCore, PopBackThrowsOnEmpty) {
+  CircVector<int> cv;
+  EXPECT_THROW(cv.pop_back(), runtime_error);
+}
+
+TEST(CircVectorCore, PopFrontThrowsOnEmpty) {
+  CircVector<int> cv;
+  EXPECT_THROW(cv.pop_front(), runtime_error);
+}
+
+TEST(CircVectorCore, PopBackHandlesWrapAround) {
+  CircVector<int> cv(3);
+  cv.push_back(1);
+  cv.push_back(2);
+  cv.push_back(3);
+  cv.pop_front();
+  cv.push_back(4);
+  EXPECT_EQ(cv.pop_back(), 4);
+}
+
+TEST(CircVectorCore, PushFrontResizesWhenFull) {
+  CircVector<int> cv(2);
+  cv.push_front(1);
+  cv.push_front(2);
+  cv.push_front(3);
+  EXPECT_EQ(cv.size(), 3);
+  EXPECT_EQ(cv.at(0), 3);
+  EXPECT_EQ(cv.at(1), 2);
+  EXPECT_EQ(cv.at(2), 1);
+}
