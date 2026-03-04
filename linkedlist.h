@@ -74,7 +74,7 @@ class LinkedList {
       list_front = node;
     } else {
       Node* curr = list_front;
-      while (curr->next != nullptr) {
+      while (curr->next) {
         curr = curr->next;
       }
 
@@ -124,7 +124,7 @@ class LinkedList {
     }
 
     Node* curr = list_front;
-    while (curr->next->next != nullptr) {
+    while (curr->next->next) {
       curr = curr->next;
     }
 
@@ -185,7 +185,7 @@ class LinkedList {
     Node* curr_1 = list_front;
     Node* curr_2 = other.list_front->next;
     
-    while (curr_2 != nullptr) {
+    while (curr_2) {
       curr_1->next = new Node(curr_2->data);
       curr_1 = curr_1->next;
       curr_2 = curr_2->next;
@@ -205,7 +205,7 @@ class LinkedList {
     clear();
     Node* curr_2 = other.list_front;
     Node* curr_1 = nullptr;
-    while (curr_2 != nullptr) {
+    while (curr_2) {
       Node* newNode = new Node(curr_2->data);
       if (curr_1 == nullptr) {
         list_front = newNode;
@@ -230,9 +230,9 @@ class LinkedList {
     ss << "[";
 
     Node* curr = list_front;
-    while (curr != nullptr) {
+    while (curr) {
       ss << curr->data;
-      if (curr->next != nullptr) {
+      if (curr->next) {
         ss << ", ";
       }
       curr = curr->next;
@@ -249,7 +249,7 @@ class LinkedList {
     Node* curr = list_front;
     size_t index = 0;
 
-    while (curr != nullptr) {
+    while (curr) {
       if (curr->data == data) {
         return index;
       }
@@ -333,7 +333,7 @@ class LinkedList {
     }
     Node* prev = list_front;
 
-    while (prev != nullptr && prev->next != nullptr) {
+    while (prev && prev->next) {
       Node* toRemove = prev->next;
       prev->next = toRemove->next;
       delete toRemove;
