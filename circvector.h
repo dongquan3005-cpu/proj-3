@@ -17,6 +17,16 @@ class CircVector {
 
   // TODO_STUDENT: add private helper functions, such as resize
   // You may also find a "wrapping" function helpful.
+ void resize(size_t new_capacity) {
+  T* new_data = new T[new_capacity];
+  for (size_t i = 0; i < vec_size; i++) {
+    new_data[i] = data[(front_idx + i) % capacity];
+  }
+  delete[] data;
+  data = new_data;
+  capacity = new_capacity;
+  front_idx = 0;
+}
 
  public:
   /**
@@ -62,16 +72,7 @@ class CircVector {
    */
   void push_front(T elem) {
     if (vec_size == capacity) {
-      size_t new_capacity = capacity * 2;
-      T* new_data = new T[new_capacity];
-
-      for (size_t i = 0; i < vec_size; i++) {
-        new_data[i] = data[(front_idx + i) % capacity];
-      }
-      delete[] data;
-      data = new_data;
-      capacity = new_capacity;
-      front_idx = 0;
+      resize(capacity * 2);
     }
 
     if (front_idx == 0) {
@@ -88,18 +89,9 @@ class CircVector {
    */
   void push_back(T elem) {
     if (vec_size == capacity) {
-      size_t new_capacity = capacity * 2;
-      T* new_data = new T[new_capacity];
-
-      for (size_t i = 0; i < vec_size; i++) {
-        new_data[i] = data[(front_idx + i) % capacity];
-      }
-
-      delete[] data;
-      data = new_data;
-      capacity = new_capacity;
-      front_idx = 0;
+      resize(capacity * 2);
     }
+   
     size_t physical_index = (front_idx + vec_size) % capacity;
     data[physical_index] = elem;
     vec_size++;
@@ -285,16 +277,7 @@ class CircVector {
     }
 
     if (vec_size == capacity) {
-      size_t new_capacity = capacity * 2;
-      T* new_data = new T[new_capacity];
-
-      for (size_t i = 0; i < vec_size; i++) {
-        new_data[i] = data[(front_idx + i) % capacity];
-      }
-      delete[] data;
-      front_idx = 0;
-      data = new_data;
-      capacity = new_capacity;
+      resize(capacity * 2);
     }
     size_t i = vec_size;
     while (i > index) {
